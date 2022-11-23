@@ -12,7 +12,7 @@
 
 
 int main() {
-	
+	//testowa zmiana do gita
 
 	initialize();
 
