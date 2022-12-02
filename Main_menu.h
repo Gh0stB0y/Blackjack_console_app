@@ -1,4 +1,4 @@
-#pragma once
+
 // Main_menu.h
 #include <iostream>
 #include <cstdlib>
@@ -9,10 +9,12 @@
 #include <conio.h>
 #include <vector>
 #include <sstream>
+#include "class_player.h"
 //using namespace std;
 
+
+Player login();	/*funkcja pozwala na zalogowanie do gry lub granie jako gosc*/
 void Display_main_menu();	/* funkcja wyswietla menu glowne*/
-void login();	/*funkcja pozwala na zalogowanie do gry lub granie jako gosc*/
 void initialize();	/*funkcja puszczana zawsze na poczatku dzialania programu
 
 wczytuje sie menu glowne oraz wszystkie opcje z nim zwiazane

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "Main_menu.h"
-#include "Class_player.h"
+#include "class_player.h"
 
 
 
@@ -12,7 +12,7 @@
 
 
 int main() {
-	//testowa zmiana do gita
+	//testowa zmiana do gi
 
 	initialize();
 
