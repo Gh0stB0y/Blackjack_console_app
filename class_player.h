@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <windows.h>
+#include <sstream>
+#include <string>
 
 class Player {
 public:
@@ -13,7 +15,7 @@ public:
 	int BJ_win = 0, BJ_lose = 0, BJ_draw = 0, BJ_BJ = 0, BJ_games = 0;
 
 	friend Player login();
-
+	friend void user_save(Player&);
 
 	void Get_username() {
 		std::cout << "PROBNY TEKST " << username<<std::endl;
@@ -26,7 +28,8 @@ public:
 		std::cout << "Witaj " << un << " ,dziekujemy za zalozenie konta w naszym kasynie :)" << std::endl;
 		Sleep(3000);
 	}
-	Player(int i, std::string un, std::string um, std::string up, int b, int p, int cd, int cw, int BJw, int BJl, int BJd, int BJBJ, int BJg)
+	Player(int i, std::string un, std::string um, std::string up, int l, int ex, int b, int p, int cd, int cw, int BJw, int BJl, int BJd, int BJBJ, int BJg) :
+		ID(i), username(un), mail(um), password(up), lvl(l), exp(ex), bankroll(b), profit(p), cash_dep(cd), cash_wth(cw), BJ_win(BJw), BJ_lose(BJl), BJ_draw(BJd), BJ_BJ(BJBJ), BJ_games(BJg)
 	{	// konstruktor uzywany przy procesie logowania
 		system("CLS");
 		std::cout << "Witaj ponownie " << un << ", zyczymy pomyslnych lowow ;)" << std::endl;
@@ -40,5 +43,28 @@ public:
 		username = "Gosc";
 		bankroll = 1000;
 	}
+	void Disp_values() {
+		system("CLS");
+		std::cout << std::endl;
+		std::cout << "Nick: " << this->username << std::endl;
+		std::cout << "Poziom: " << this->lvl << std::endl;
+		std::cout << "Doswiadczenie: " << this->exp << std::endl;
+		std::cout << "Stan konta: " << this->bankroll << std::endl;
+		std::cout << "Wplacone pieniadze: " << this->cash_dep << std::endl;
+		std::cout << "Wyplacone pieniadze: " << this->cash_wth << std::endl;
+		std::cout << "Zarobki: " << this->profit << std::endl;
+		if (this->BJ_games > 0)std::cout << "% Wygranych rozdan: " << this->BJ_win / this->BJ_games * 100 << std::endl;
+	}
+	std::string save_val() {
 
+		std::stringstream ss;
+		ss << ID << " " << username << " " << mail << " " << password << " " << lvl << " " << exp << " " << bankroll << " " << profit << " " << cash_dep << " " << cash_wth << " " << BJ_win << " " << BJ_lose << " " << BJ_draw << " " << BJ_BJ << " " << BJ_games << " ";
+		std::string rtrn_val = ss.str();
+		//std::cout << "print stringstream -> string: " << rtrn_val << std::endl;
+		return(rtrn_val);
+		//zapis_plik: ID username mail password lvl exp bankroll profit cash_dep cash_wth BJ_win BJ_lose BJ_draw BJ_BJ BJ_games
+	}
+	void Main_menu_data() {
+		std::cout << "Gracz: " << username << "\tID: " << ID << "\tBankroll: " << bankroll << std::endl;
+	}
 };

@@ -4,15 +4,84 @@
 //using namespace std;
 bool error;
 void play();
-void settings();
-void stats();
-void exit_game() {
+
+void settings() {
+	char sign;
+	char sign2;
+	bool finish = false;
+	system("CLS");
+	std::cout << "\t\tStatystyki" << std::endl << std::endl;
+	std::cout << "Opcja w budowie" << std::endl;
+	std::cout << "Nacisnij esc, aby wrocic do menu glownego..." << std::endl;
+
+	do {
+		sign2 = _getch();
+	} while (sign2 != 27);
+}
+
+void stats(Player& playerr1) {
+	bool finish = false;
+	do {
+		system("CLS");
+		std::cout << "\t\tUstawienia" << std::endl << std::endl;
+		std::cout << "1. Statystyki gracza" << std::endl;
+		std::cout << "2. Statystyki kasyna" << std::endl;
+		std::cout << "3. Ranking graczy" << std::endl;
+		std::cout << "Nacisnij esc, aby wrocic do menu glownego..." << std::endl;
+		char sign;
+		char sign2;
+		do {
+			sign = _getch();
+			switch (sign) {
+
+			case '1':
+				error = false;
+				playerr1.Disp_values();
+				std::cout << "Nacisnij esc, aby wrocic do okna statystyk..." << std::endl;
+				do {
+					sign2 = _getch();
+				} while (sign2 != 27);
+				break;
+			case '2':
+				error = false;
+				system("CLS");
+				std::cout << "Statystyki kasyna pojawia sie wkrotce..." << std::endl;
+				std::cout << "Nacisnij esc, aby wrocic do okna statystyk..." << std::endl;
+				do {
+					sign2 = _getch();
+				} while (sign2 != 27);
+				break;
+			case '3':
+				error = false;
+				system("CLS");
+				std::cout << "Ranking graczy pojawi sie wkrotce..." << std::endl;
+				std::cout << "Nacisnij esc, aby wrocic do okna statystyk..." << std::endl;
+				do {
+					sign2 = _getch();
+				} while (sign2 != 27);
+				break;
+			case 27:
+				error = false;
+				finish = true;
+				break;
+			default:
+				std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 3 " << std::endl;
+				error = true;
+				break;
+			}
+		} while (error);
+
+	} while (!finish);
+}
+
+void exit_game(Player& player1) {
+	user_save(player1);
 	system("CLS");
 	std::cout << "Dziekujemy za wizyte w kasynie, do zobaczenia niebawem :)";
 	Sleep(5000);
 	exit(0);
-
 }
+
 void ile_wejsc() {
 	std::fstream wykaz_wejscia;
 	std::string linia;
@@ -46,9 +115,6 @@ void ile_wejsc() {
 	//TWORZENIE PLIKOW BINARNYCH	generalnie to jest do przebudowania, trzeba wprowadzic pliki binarne i zakodowac zawartosc tak zeby zaden random tego nie odczytal
 }
 
-
-
-
 Player login() {
 
 	std::vector<bool> err_vec(15, false);
@@ -57,8 +123,8 @@ Player login() {
 		"Blad adresu email! Nie wykryto znaku @","Blad adresu email! Wykryto wiecej niz 1 znak @",
 		"Blad adresu email! Wykryto niedozwolony znak","Blad adresu email! Czesc lokalna (czesc przed znakiem @) jest dluzsza niz 63 znaki)",
 		"Wykryto niedozwolony znak, wpisz inne haslo","Haslo nie zawiera wielkiej litery","Haslo nie zawiera malej litery","Haslo nie zawiera cyfry",
-		"Haslo nie zawiera znaku specjalnego","Nie znaleziono wpisanego loginu lub e-maila w bazie danych","Wpisane haslo jest niepoprawne"};
-	std::vector < std::string> user_data_str_vec(3,"");
+		"Haslo nie zawiera znaku specjalnego","Nie znaleziono wpisanego loginu lub e-maila w bazie danych","Wpisane haslo jest niepoprawne" };
+	std::vector < std::string> user_data_str_vec(3, "");
 	std::vector < int> user_data_int_vec;
 	system("CLS");
 	std::cout << "1. Zaloguj sie do kasyna\t2. Zarejestruj sie\t3. Zagraj jako gosc" << std::endl;
@@ -79,32 +145,31 @@ Player login() {
 	std::string token;
 	std::string delimiter = " ";
 	size_t variable_count = 0;
-	int check_ID;
+	int check_ID = 0;
 	bool check_user_mail = false;
 	do {
 		choice = _getch();
 
 
 		switch (choice) {
-
-		case '1':
+		case '1': //LOGOWANIE DO SYSTEMU
 			do {
 				do {
 					error = false;
 					system("CLS");
 					std::cout << wypisz_sign_in;
 					getline(std::cin, username_temp);				  //WPROWADZENIE LOGINU LUB MAILA PRZEZ UZYTKOWNIKA
-					std::cout << wypisz_sign_in2;					  
+					std::cout << wypisz_sign_in2;
 					getline(std::cin, pass_temp);					  //WPROWADZENIE HASLA PRZEZ UZYTKOWNIKA
 					for (int i = 0; i < username_temp.length(); i++) {//SPRAWDZENIE CZY NAZWA UZYTKOWNIKA ZAWIERA ZNAK STANDARDOWE Z ASCII
-						if (username_temp[i] < 32 || username_temp[i]>126) {
+						if (username_temp[i] < 33 || username_temp[i]>126) {
 							error = true;
 							std::cout << err_vec_str[0];
 							Sleep(3000);
 						}
 					}
 					for (int i = 0; i < pass_temp.length(); i++) {//SPRAWDZENIE CZY HASLO ZAWIERA ZNAK STANDARDOWE Z ASCII
-						if (pass_temp[i] < 32 || pass_temp[i]>126) {
+						if (pass_temp[i] < 33 || pass_temp[i]>126) {
 							error = true;
 							std::cout << err_vec_str[0];
 							Sleep(3000);
@@ -112,118 +177,98 @@ Player login() {
 					}
 
 				} while (error);
-			
+
 				UD.open("User_data.bin", std::ios::in);		//OTWIERANIE PLIKU Z DANYMI UZYTKOWNIKA
 				if (UD.good()) {
-					
 					while (getline(UD, user_data_line)) {	//WCZYTANIE Z PLIKU LINII, KTORA ZAWIERA WSZYSTKIE INFORMACJE NA TEMAT UZYTKOWNIKA
 						user_data_str_vec.clear();
 						user_data_str_vec.resize(3);
-						variable_count = 1;
+						variable_count = 0;
 						pos = 0;
-						check_ID=1;
-						
-						while ((pos = user_data_line.find(delimiter)) != std::string::npos && variable_count<4) {	//SPRAWDZENIE PIERWSZYCH TRZECH DANYCH Z LINII 
+						check_ID = 1;
+						while ((pos = user_data_line.find(delimiter)) != std::string::npos && variable_count < 4) {	//SPRAWDZENIE PIERWSZYCH TRZECH DANYCH Z LINII 
 							token = user_data_line.substr(0, pos);
 							user_data_line.erase(0, pos + delimiter.length());
 							variable_count++;
 							switch (variable_count) {
-
 							default: break;
 							case 1:				//SPRAWDZENIE PIERWSZEJ ZMIENNEJ - ID
 								check_ID = stoi(token);
 								break;
 							case 2:
-								user_data_str_vec[0]=token;
+								user_data_str_vec[0] = token;
 								if (username_temp == token) {
 									check_user_mail = true;
-									error = false;	
-									std::cout << check_user_mail << "case2" <<"  variable count: "<< variable_count << std::endl;
+									error = false;
+									err_vec[13] = false;
 								}
 								else {
 									error = true;
 									check_user_mail = false;
-									std::cout << check_user_mail <<"case2" << "  variable count: " << variable_count << std::endl;
+									err_vec[13] = true;
 								}
+								break;
 							case 3:				//SPRAWDZENIE DRUGIEJ I TRZECIEJ ZMIENNEJ - LOGINU I EMAILA
 								user_data_str_vec[1] = token;
 								if (username_temp == token) {
 									check_user_mail = true;
 									error = false;
-									err_vec[13] == false;
-									std::cout << check_user_mail << "case3a" << "  variable count: " << variable_count << std::endl;
+									err_vec[13] = false;
 								}
 								else if (username_temp != token && check_user_mail == true) {
 									error = false;
-									std::cout << check_user_mail << "case3b" << "  variable count: " << variable_count << std::endl;
-									//err_vec[13] == false;
+									err_vec[13] = false;
 								}
 								else if (username_temp != token && check_user_mail == false) {
 									error = true;
 									check_user_mail = false;
-									err_vec[13] == true;
-									std::cout << check_user_mail << "case3c" << "  variable count: " << variable_count << std::endl;
+									err_vec[13] = true;
 								}
-
 								break;
 							case 4:				//SPRAWDZENIE CZWARTEJ ZMIENNEJ - HASLA ORAZ PODJECIE DECYZJI O DALSZYCH KROKACH
 								user_data_str_vec[2] = token;
-								if (check_user_mail == true&&pass_temp==token) {		//LOGIN LUB MAIL i haslo PASUJA DO STRINGOW WPISANEGO PRZEZ UZYTKOWNIKA
-									std::cout << "Login i haslo poprawne"<<std::endl;
-									error = false;	
-									err_vec[14] == false;
-									std::cout << check_user_mail << "case4" << "  variable count: " << variable_count << std::endl;
+								if (check_user_mail == true && pass_temp == token) {		//LOGIN LUB MAIL i haslo PASUJA DO STRINGOW WPISANEGO PRZEZ UZYTKOWNIKA
+									std::cout << "Login i haslo poprawne" << std::endl;
+									Sleep(2000);
+									error = false;
+									err_vec[14] = false;
 								}
 								else if (check_user_mail == true && pass_temp != token) {	//LOGIN/MAIL PRAWIDLOWY, HASLO NIEPRAWIDLOWE
-									err_vec[14] == true;
+									err_vec[14] = true;
 									error = true;
-									std::cout << check_user_mail << "case4" << "  variable count: " << variable_count << std::endl;
 								}
 								else {							//ANI LOGIN/MAIL ANI HASLO NIE PASUJA DO STRINGOW WPISANYCH PRZEZ UZYTKOWNIKA								
-									err_vec[14]=true;
+									err_vec[14] = true;
 									error = true;
-									std::cout << check_user_mail << "case4" << "  variable count: " << variable_count << std::endl;
 								}
 								break;
 							}
 						}
-						
 						//to sie dzieje po sprawdzeniu pierwszych 4 zmiennych z linii												
-						if (!error) {//jesli i haslo i login zostaly wpisane poprawnie to wiemy ktorego uzytkownika trzeba wczyta (po numerze ID, czyli ID_check)	
-							err_vec[13] = false;
-							err_vec[14] = false;
-							Sleep(2000);
-							break;
-						}
-						if (check_user_mail) err_vec[13] = true;
-					} // koniec odczytywania linijek
-					
-					Sleep(15000);
-					if (check_user_mail) {
+						if (!error) break; //jesli i haslo i login zostaly wpisane poprawnie to wiemy ktorego uzytkownika trzeba wczyta (po numerze ID, czyli ID_check)	
+						if (error && err_vec[13] == false) break; //jesli login jest dobry ale haslo zle to przestaje szukac uzytkownika w reszcie pliku i zwracam info ze jest zle haslo					
+					} // koniec odczytywania linijek					
+					if (err_vec[13]) {//zly login
 						std::cout << err_vec_str[13] << std::endl;
 						Sleep(2000);
 					}
-					if (err_vec[14]&&!err_vec[13]) {
+					if (err_vec[14] && !err_vec[13]) {	//zle haslo dobry login
 						std::cout << err_vec_str[14] << std::endl;
 						Sleep(2000);
 					}
-
+					while ((pos = user_data_line.find(" ")) != std::string::npos) {	//SPRAWDZENIE PIERWSZYCH TRZECH DANYCH Z LINII 
+						user_data_int_vec.push_back(stoi(user_data_line.substr(0, pos)));
+						user_data_line.erase(0, pos + delimiter.length());
+					}
+					//for (size_t i = 0; i < user_data_int_vec.size(); i++) std::cout << user_data_int_vec[i]<<std::endl;
 				}
 				else {
-				error = true;
-				std::cout << std::endl << "Blad podczas odczytu danych, sprobuj ponownie";
-				Sleep(3000);
-			}
-		
-				while ((pos = user_data_line.find(" ")) != std::string::npos) {	//SPRAWDZENIE PIERWSZYCH TRZECH DANYCH Z LINII 
-					user_data_int_vec.push_back(stoi( user_data_line.substr(0, pos)));
-					user_data_line.erase(0, pos + delimiter.length());
+					error = true;
+					std::cout << std::endl << "Blad podczas odczytu danych, sprobuj ponownie";
+					Sleep(3000);
 				}
-				//Sleep(5000);
 				UD.close();
 			} while (error);
-
-			//TRZEBA SPRAWDZIC CZY ZGADZAJA SIE DANE LOGOWANIA
 			break;
 		case '2'://REJESTRACJA NOWEGO UZYTKOWNIKA
 			error = false;
@@ -235,7 +280,7 @@ Player login() {
 					getline(std::cin, username_temp);
 
 					for (int i = 0; i < username_temp.length(); i++) {//SPRAWDZENIE CZY NAZWA UZYTKOWNIKA ZAWIERA ZNAK STANDARDOWE Z ASCII
-						if (username_temp[i] < 32 || username_temp[i]>126) {
+						if (username_temp[i] < 33 || username_temp[i]>126) {
 							err_vec[0] = true;
 						}
 						if (i > 15) { //NAZWA UZYTKOWNIKA MOZE MIEC MAX 15 ZNAKOW	
@@ -271,7 +316,7 @@ Player login() {
 						}
 						if (email_temp[i] == '@') malpa++;
 
-						if (email_temp[i] < 32 || email_temp[i]>126) {//SPRAWDZENIE CZY NAZWA UZYTKOWNIKA ZAWIERA ZNAK STANDARDOWE Z ASCII
+						if (email_temp[i] < 33 || email_temp[i]>126) {//SPRAWDZENIE CZY NAZWA UZYTKOWNIKA ZAWIERA ZNAK STANDARDOWE Z ASCII
 							err_vec[6] = true;
 						}
 						if (malpa == 0 && i > 63) {//ZA DLUGA PIERWSZA CZESC MAILA
@@ -308,7 +353,7 @@ Player login() {
 					//std::cout << std::endl << err_vec[8];
 					for (int i = 0; i < pass_temp.length(); i++) {
 
-						if (pass_temp[i] < 32 || pass_temp[i]>126) err_vec[8] = true;//wykrycie niedozwolonych znakow
+						if (pass_temp[i] < 33 || pass_temp[i]>126) err_vec[8] = true;//wykrycie niedozwolonych znakow
 						if (pass_temp[i] > 64 && pass_temp[i] < 90) err_vec[9] = false;//jesli wielka litera wystepuje w hasle to skasuj blad
 						if (pass_temp[i] > 96 && pass_temp[i] < 123) err_vec[10] = false;//jesli mala litera wystepuje w hasle to skasuj blad
 						if (pass_temp[i] > 47 && pass_temp[i] < 58) err_vec[11] = false;//jesli cyfra wystepuje w hasle to skasuj blad
@@ -335,12 +380,10 @@ Player login() {
 				UD.open("User_data.bin", std::ios::out | std::ios::app | std::ios::binary);
 				if (UD.good()) {
 					zapis_plik << counter << ' ';
-					zapis_plik << username_temp + ' ' + email_temp + ' ' + pass_temp + ' ' + "1" + ' ' + "0" + ' ' + "5000" + ' ' + "0" + ' ' + "5000" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" + '\n';
+					zapis_plik << username_temp + ' ' + email_temp + ' ' + pass_temp + ' ' + "1" + ' ' + "0" + ' ' + "5000" + ' ' + "0" + ' ' + "5000" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" + ' ' + "0" +' '+ '\n';
 					//linijka zapis_plik: ID username mail password lvl exp bankroll profit cash_dep cash_wth BJ_win BJ_lose BJ_draw BJ_BJ BJ_games
 					UD << zapis_plik.rdbuf();
 					UD.close();
-
-
 				}
 				else {
 					error = true;
@@ -351,10 +394,8 @@ Player login() {
 				}
 			} while (error == true);
 			break;
-
 		case '3':
 			error = false;
-
 			//TRZEBA UTWORZYC OBIEKT KLASY "GRACZ" O NAZWIE GOSC;
 			break;
 		default:
@@ -364,39 +405,60 @@ Player login() {
 		}
 
 	} while (error);
-	
-	
+
+
 	if (choice == '1') {
 		Player P1(check_ID, user_data_str_vec[0], user_data_str_vec[1], user_data_str_vec[2], user_data_int_vec[0], user_data_int_vec[1], user_data_int_vec[2], user_data_int_vec[3],
-			user_data_int_vec[4], user_data_int_vec[5], user_data_int_vec[6], user_data_int_vec[7], user_data_int_vec[8]);
+			user_data_int_vec[4], user_data_int_vec[5], user_data_int_vec[6], user_data_int_vec[7], user_data_int_vec[8], user_data_int_vec[9], user_data_int_vec[10]);
+		//P1.Disp_values();
 		return P1;
 	}
 	else if (choice == '2') {
 		Player P1(counter, username_temp, email_temp, pass_temp);
+		//P1.Disp_values();
 		return P1;
 	}
 	else if (choice == '3') {
 		Player P1;
 		return P1;
 	}
-	
+
 }
 
+void user_save(Player& playerr1) {
+	std::ifstream UD;
+	std::ofstream UD2;
+	std::vector<std::string> temp_users;
+	std::string temp_users_line;
+	size_t licznik = 1;
+	UD.open("User_data.bin", std::ios::in);
+	if (UD.good()) {
+		while (getline(UD, temp_users_line)) {
+			if (playerr1.ID == licznik) temp_users.push_back(playerr1.save_val());
+			else temp_users.push_back(temp_users_line);
+			licznik++;
+		}
+		UD.close();
+	}
+	else std::cout << "Blad przy zapisie danych!" << std::endl;
+	UD2.open("User_data.bin", std::ios::out | std::ios::trunc);
+	if (UD2.good()) {
+		for (size_t i = 0; i < temp_users.size(); i++) UD2 << temp_users[i] << std::endl;
+	}
+	else std::cout << "Blad przy zapisie danych!" << std::endl;
+	UD2.close();
+}
 
-
-
-void Display_main_menu() {
+void Display_main_menu(Player& player1) {
 	char sign;
-
-
 	system("CLS");
+	player1.Main_menu_data();
 	std::cout << "\t\tMenu glowne" << std::endl << std::endl;
 	std::cout << "1. GRAJ" << std::endl;
 	std::cout << "2. USTAWIENIA" << std::endl;
 	std::cout << "3. STATYSTYKI" << std::endl;
 	std::cout << "4. ZMIEN UZYTKOWNIKA" << std::endl;
 	std::cout << "5. WYJSCIE" << std::endl;
-	
 
 	do {
 		sign = _getch();
@@ -408,19 +470,19 @@ void Display_main_menu() {
 			break;
 		case '2':
 			error = false;
-			//settings();
+			settings();
 			break;
 		case '3':
 			error = false;
-			//stats();
+			stats(player1);
 			break;
 		case '4':
 			error = false;
-			//login();
+			player1 = login();
 			break;
 		case '5':
 			error = false;
-			exit_game();
+			exit_game(player1);
 		default:
 			std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
 			error = true;
@@ -435,8 +497,7 @@ void Display_main_menu() {
 void initialize() {
 
 	ile_wejsc();
-	Player Play1=login();
-	Display_main_menu();
-	std::cout << "Login aktualnego goscia: " << Play1.username;
+	Player Play1 = login();
+	for (;;) Display_main_menu(Play1);
 
 }
