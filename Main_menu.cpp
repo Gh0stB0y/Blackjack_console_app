@@ -1,9 +1,17 @@
 //Main_menu.cpp
 #include "class_player.h"
 #include "Main_menu.h"
+#include "board_class.h"
 //using namespace std;
 bool error;
-void play();
+void wybor_gry() {
+
+}
+
+void play() {
+	Board* pointer;
+	wybor_gry();
+}
 
 void settings() {
 	char sign;

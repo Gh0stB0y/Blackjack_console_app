@@ -21,7 +21,10 @@ public:
 		std::cout << "PROBNY TEKST " << username<<std::endl;
 
 	}
-
+	bool Get_ID() {
+		if (ID == 4) return 1;
+		else return 0;
+	}
 	Player(int i, std::string un, std::string um, std::string up) : ID(i), username(un), mail(um), password(up), bankroll(5000)
 	{	// konstruktor uzywany przy procesie rejestracji
 		system("CLS");
