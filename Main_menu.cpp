@@ -4,13 +4,151 @@
 #include "board_class.h"
 //using namespace std;
 bool error;
-void wybor_gry() {
 
+int wybor_gry() {
+	
+	char game_choice, tab_choice, error2=false;
+	int rtrn_val=0;
+	
+		do {
+			error = false;
+			system("CLS");
+			std::cout << "\t\tWybierz gre:" << std::endl << std::endl;
+			std::cout << "1. Blackjack" << std::endl;
+			std::cout << "2. Ruletka" << std::endl;
+			std::cout << "3. Bacarrat" << std::endl;
+			std::cout << "4. Poker" << std::endl;
+			std::cout << "5. Wojna" << std::endl;
+			std::cout << "Nacisnij esc, aby wrocic do menu glownego..." << std::endl;
+			game_choice = _getch();
+			switch (game_choice) {
+			case '1':
+				rtrn_val = 10;
+				do {
+					error2 = false;
+					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
+					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
+					std::cout << "1. Beginners room" << std::endl;
+					std::cout << "2. Standard room" << std::endl;
+					std::cout << "3. Adventure room" << std::endl;
+					std::cout << "4. Prestige room" << std::endl;
+					std::cout << "5. VIP room" << std::endl;
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					tab_choice = _getch();
+					if ((tab_choice < 49 && tab_choice!=27) || tab_choice>53) {
+						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+						Sleep(1000);
+						error2 = true;
+					}
+					else if (tab_choice == 27) error = true;
+					else rtrn_val += int(tab_choice-48);	
+				} while (error2);
+				break;
+			case '2':
+				rtrn_val = 20;
+				do {
+					error2 = false;
+					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
+					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
+					std::cout << "1. Beginners room" << std::endl;
+					std::cout << "2. Standard room" << std::endl;
+					std::cout << "3. Adventure room" << std::endl;
+					std::cout << "4. Prestige room" << std::endl;
+					std::cout << "5. VIP room" << std::endl;
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					tab_choice = _getch();
+					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
+						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+						Sleep(1000);
+						error2 = true;
+					}
+					else if (tab_choice == 27) error = true;
+					else rtrn_val += int(tab_choice - 48);
+				} while (error2);
+				break;
+			case '3':
+				rtrn_val = 30;
+				do {
+					error2 = false;
+					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
+					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
+					std::cout << "1. Beginners room" << std::endl;
+					std::cout << "2. Standard room" << std::endl;
+					std::cout << "3. Adventure room" << std::endl;
+					std::cout << "4. Prestige room" << std::endl;
+					std::cout << "5. VIP room" << std::endl;
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					tab_choice = _getch();
+					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
+						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+						Sleep(1000);
+						error2 = true;
+					}
+					else if (tab_choice == 27) error = true;
+					else rtrn_val += int(tab_choice - 48);
+				} while (error2);
+				break;
+			case '4':
+				rtrn_val = 40;
+				do {
+					error2 = false;
+					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
+					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
+					std::cout << "1. Beginners room" << std::endl;
+					std::cout << "2. Standard room" << std::endl;
+					std::cout << "3. Adventure room" << std::endl;
+					std::cout << "4. Prestige room" << std::endl;
+					std::cout << "5. VIP room" << std::endl;
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					tab_choice = _getch();
+					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
+						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+						Sleep(1000);
+						error2 = true;
+					}
+					else if (tab_choice == 27) error = true;
+					else rtrn_val += int(tab_choice - 48);
+				} while (error2);
+				break;
+			case '5':
+				rtrn_val = 50;
+				do {
+					error2 = false;
+					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
+					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
+					std::cout << "1. Beginners room" << std::endl;
+					std::cout << "2. Standard room" << std::endl;
+					std::cout << "3. Adventure room" << std::endl;
+					std::cout << "4. Prestige room" << std::endl;
+					std::cout << "5. VIP room" << std::endl;
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					tab_choice = _getch();
+					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
+						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+						Sleep(1000);
+						error2 = true;
+					}
+					else if (tab_choice == 27) error = true;
+					else rtrn_val += int(tab_choice - 48);
+				} while (error2);
+				break;
+			case 27:
+				rtrn_val=0;
+				break;
+			default:
+				std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+				Sleep(2000);
+				error = true;
+				break;
+			}
+		} while (error);
+	return rtrn_val;
 }
 
 void play() {
-	Board* pointer;
-	wybor_gry();
+	Board* game_pointer;
+	std::cout<<wybor_gry();
+	Sleep(2000);
 }
 
 void settings() {
@@ -459,22 +597,23 @@ void user_save(Player& playerr1) {
 
 void Display_main_menu(Player& player1) {
 	char sign;
-	system("CLS");
-	player1.Main_menu_data();
-	std::cout << "\t\tMenu glowne" << std::endl << std::endl;
-	std::cout << "1. GRAJ" << std::endl;
-	std::cout << "2. USTAWIENIA" << std::endl;
-	std::cout << "3. STATYSTYKI" << std::endl;
-	std::cout << "4. ZMIEN UZYTKOWNIKA" << std::endl;
-	std::cout << "5. WYJSCIE" << std::endl;
-
 	do {
+		system("CLS");
+		player1.Main_menu_data();
+		std::cout << "\t\tMenu glowne" << std::endl << std::endl;
+		std::cout << "1. GRAJ" << std::endl;
+		std::cout << "2. USTAWIENIA" << std::endl;
+		std::cout << "3. STATYSTYKI" << std::endl;
+		std::cout << "4. ZMIEN UZYTKOWNIKA" << std::endl;
+		std::cout << "5. WYJSCIE" << std::endl;
+
+	
 		sign = _getch();
 		switch (sign) {
 
 		case '1':
 			error = false;
-			//play();
+			play();
 			break;
 		case '2':
 			error = false;
@@ -493,6 +632,7 @@ void Display_main_menu(Player& player1) {
 			exit_game(player1);
 		default:
 			std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
+			Sleep(1000);
 			error = true;
 			break;
 		}

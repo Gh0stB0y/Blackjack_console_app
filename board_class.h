@@ -7,7 +7,7 @@
 class Board {
 protected:
 	unsigned int min_lvl,max_seats,max_seats_one_person,min_entry,max_entry,win,lose,winratio;
-	float cas_profit;
+	float cash_profit;
 	bool bots;
 public:
 	virtual void Disp_table() = 0;
