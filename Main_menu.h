@@ -57,3 +57,4 @@ void exit_game();
 wyjscie z programu
 */
 
+int choose_game();

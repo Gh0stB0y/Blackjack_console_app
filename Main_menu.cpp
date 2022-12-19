@@ -3,187 +3,41 @@
 #include "Main_menu.h"
 #include "board_class.h"
 //using namespace std;
+
 bool error;
 
-int wybor_gry() {
-	
-	char game_choice, tab_choice, error2=false;
-	int rtrn_val=0;
-	size_t pos = 0, game_count=0,variable_count = 0;
-	std::string delimiter = "/",token;
-	std::ifstream gt;
-	
-	gt.open("games_tables.bin",std::ios::in);	//plik przechowujacy nazwe/rodzaj gry oraz nazwy stolow jakie sa przeznaczone do danej gry
-	if (gt.good()) {
-		std::string linia_plik;
-		std::vector<std::string> games_vec, tables_row_vec;
-		std::vector<std::vector<std::string>>tables_vec;
-		while (getline(gt, linia_plik)) {
-			game_count++;
-			pos = 0;
-			variable_count = 0;
-			tables_row_vec.clear();
-			while ((pos = linia_plik.find(delimiter)) != std::string::npos) {	//SPRAWDZENIE PIERWSZYCH TRZECH DANYCH Z LINII 
-				token = linia_plik.substr(0, pos);
-				linia_plik.erase(0, pos + delimiter.length());
-				variable_count++;
-				if (variable_count == 1) games_vec.push_back(token);	//wpisz dane do vectora games
-				else tables_row_vec.push_back(token);//wpisz dane do vectora tables
-			}
-			tables_vec.push_back(tables_row_vec);
-		}
-		//for (int i = 0; i < tables_vec.size(); i++) {
-			//std::cout << "Gra: " << games_vec[i]<<std::endl;
-			//for (int j = 0; j < tables_vec[i].size(); j++) {
-			//	std::cout << tables_vec[i][j] << "\t";
-			//}
-			//std::cout << std::endl;
-		//}
-	
-		do {						//wczytanie menu wyboru gry i stolu na podstawie danych z pliku
-			error = false;
-			system("CLS");
-			std::cout << "\t\tWybierz gre:" << std::endl << std::endl;
-			for (int i = 0; i < games_vec.size(); i++) {
-			std::cout << i+1<<". "<<games_vec[i] << "\t";
-			}
-			std::cout << std::endl;
-			game_choice = _getch();
-			switch (game_choice) {
-			case '1':
-				rtrn_val = 10;
-				do {
-					error2 = false;
-					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
-					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
-					std::cout << "1. Beginners room" << std::endl;
-					std::cout << "2. Standard room" << std::endl;
-					std::cout << "3. Adventure room" << std::endl;
-					std::cout << "4. Prestige room" << std::endl;
-					std::cout << "5. VIP room" << std::endl;
-					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
-					tab_choice = _getch();
-					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
-						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-						Sleep(1000);
-						error2 = true;
-					}
-					else if (tab_choice == 27) error = true;
-					else rtrn_val += int(tab_choice - 48);
-				} while (error2);
-				break;
-			case '2':
-				rtrn_val = 20;
-				do {
-					error2 = false;
-					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
-					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
-					std::cout << "1. Beginners room" << std::endl;
-					std::cout << "2. Standard room" << std::endl;
-					std::cout << "3. Adventure room" << std::endl;
-					std::cout << "4. Prestige room" << std::endl;
-					std::cout << "5. VIP room" << std::endl;
-					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
-					tab_choice = _getch();
-					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
-						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-						Sleep(1000);
-						error2 = true;
-					}
-					else if (tab_choice == 27) error = true;
-					else rtrn_val += int(tab_choice - 48);
-				} while (error2);
-				break;
-			case '3':
-				rtrn_val = 30;
-				do {
-					error2 = false;
-					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
-					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
-					std::cout << "1. Beginners room" << std::endl;
-					std::cout << "2. Standard room" << std::endl;
-					std::cout << "3. Adventure room" << std::endl;
-					std::cout << "4. Prestige room" << std::endl;
-					std::cout << "5. VIP room" << std::endl;
-					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
-					tab_choice = _getch();
-					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
-						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-						Sleep(1000);
-						error2 = true;
-					}
-					else if (tab_choice == 27) error = true;
-					else rtrn_val += int(tab_choice - 48);
-				} while (error2);
-				break;
-			case '4':
-				rtrn_val = 40;
-				do {
-					error2 = false;
-					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
-					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
-					std::cout << "1. Beginners room" << std::endl;
-					std::cout << "2. Standard room" << std::endl;
-					std::cout << "3. Adventure room" << std::endl;
-					std::cout << "4. Prestige room" << std::endl;
-					std::cout << "5. VIP room" << std::endl;
-					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
-					tab_choice = _getch();
-					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
-						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-						Sleep(1000);
-						error2 = true;
-					}
-					else if (tab_choice == 27) error = true;
-					else rtrn_val += int(tab_choice - 48);
-				} while (error2);
-				break;
-			case '5':
-				rtrn_val = 50;
-				do {
-					error2 = false;
-					system("CLS");			//TUTAJ NALEZY WPROWADZIC JAKIES ORYGINALNE NAZWY, KTORE SA ROZNE OD NAZW Z INNYCH GIER, Dlatego nie jest wypisane przez jedna funkcje
-					std::cout << "\t\tWybierz stol:" << std::endl << std::endl;
-					std::cout << "1. Beginners room" << std::endl;
-					std::cout << "2. Standard room" << std::endl;
-					std::cout << "3. Adventure room" << std::endl;
-					std::cout << "4. Prestige room" << std::endl;
-					std::cout << "5. VIP room" << std::endl;
-					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
-					tab_choice = _getch();
-					if ((tab_choice < 49 && tab_choice != 27) || tab_choice > 53) {
-						std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-						Sleep(1000);
-						error2 = true;
-					}
-					else if (tab_choice == 27) error = true;
-					else rtrn_val += int(tab_choice - 48);
-				} while (error2);
-				break;
-			case 27:
-				rtrn_val = 0;
-				break;
-			default:
-				std::cout << "ZLE! Wybierz liczbe z zakresu 1 - 5 " << std::endl;
-				Sleep(2000);
-				error = true;
-				break;
-			}
-		} while (error);
-		return rtrn_val;
-	}
-	else {
-	std::cout << "Blad odczytu plikow, sprobuj ponownie pozniej";
-	Sleep(2000);
-	return 1;
-	}
-}
+
+
+
+//GLOWNE FUNKCJE
 
 void play() {
-	Board* game_pointer;
-	wybor_gry();
 	
-	Sleep(2000);
+	Board* game_pointer=nullptr;
+	unsigned int game_tab_ID=choose_game();	//wybor gry i stolu do gry z pliku, zwracana liczba jest 3-cyfrowa, pierwsza cyfra determinuje gre, dwie kolejne stol do gry
+	
+	switch (game_tab_ID/100) {
+	case 0:
+		break;
+	case 1:
+		get_game_data<Board_BJ>(game_tab_ID);
+		break;
+	case 2:
+		get_game_data<Board_roulette>(game_tab_ID);
+		break;
+	case 3:
+		get_game_data<Board_bacarrat>(game_tab_ID);
+		break;
+	case 4:
+		get_game_data<Board_poker>(game_tab_ID);
+		break;
+	case 5:
+		get_game_data<Board_war>(game_tab_ID);
+		break;
+	default:
+		break;
+		
+	}
 }
 
 void settings() {
@@ -199,7 +53,6 @@ void settings() {
 		sign2 = _getch();
 	} while (sign2 != 27);
 }
-
 void stats(Player& playerr1) {
 	bool finish = false;
 	do {
@@ -254,7 +107,6 @@ void stats(Player& playerr1) {
 
 	} while (!finish);
 }
-
 void exit_game(Player& player1) {
 	user_save(player1);
 	system("CLS");
@@ -262,7 +114,6 @@ void exit_game(Player& player1) {
 	Sleep(5000);
 	exit(0);
 }
-
 void ile_wejsc() {
 	std::fstream wykaz_wejscia;
 	std::string linia;
@@ -295,7 +146,6 @@ void ile_wejsc() {
 
 	//TWORZENIE PLIKOW BINARNYCH	generalnie to jest do przebudowania, trzeba wprowadzic pliki binarne i zakodowac zawartosc tak zeby zaden random tego nie odczytal
 }
-
 Player login() {
 
 	std::vector<bool> err_vec(15, false);
@@ -605,31 +455,6 @@ Player login() {
 	}
 
 }
-
-void user_save(Player& playerr1) {
-	std::ifstream UD;
-	std::ofstream UD2;
-	std::vector<std::string> temp_users;
-	std::string temp_users_line;
-	size_t licznik = 1;
-	UD.open("User_data.bin", std::ios::in);
-	if (UD.good()) {
-		while (getline(UD, temp_users_line)) {
-			if (playerr1.ID == licznik) temp_users.push_back(playerr1.save_val());
-			else temp_users.push_back(temp_users_line);
-			licznik++;
-		}
-		UD.close();
-	}
-	else std::cout << "Blad przy zapisie danych!" << std::endl;
-	UD2.open("User_data.bin", std::ios::out | std::ios::trunc);
-	if (UD2.good()) {
-		for (size_t i = 0; i < temp_users.size(); i++) UD2 << temp_users[i] << std::endl;
-	}
-	else std::cout << "Blad przy zapisie danych!" << std::endl;
-	UD2.close();
-}
-
 void Display_main_menu(Player& player1) {
 	char sign;
 	do {
@@ -642,7 +467,6 @@ void Display_main_menu(Player& player1) {
 		std::cout << "4. ZMIEN UZYTKOWNIKA" << std::endl;
 		std::cout << "5. WYJSCIE" << std::endl;
 
-	
 		sign = _getch();
 		switch (sign) {
 
@@ -675,12 +499,123 @@ void Display_main_menu(Player& player1) {
 
 
 }
-
-
 void initialize() {
 
 	ile_wejsc();
 	Player Play1 = login();
 	for (;;) Display_main_menu(Play1);
 
+}
+
+
+
+//FUNKCJE POBOCZNE
+
+void user_save(Player& playerr1) {
+	std::ifstream UD;
+	std::ofstream UD2;
+	std::vector<std::string> temp_users;
+	std::string temp_users_line;
+	size_t licznik = 1;
+	UD.open("User_data.bin", std::ios::in);
+	if (UD.good()) {
+		while (getline(UD, temp_users_line)) {
+			if (playerr1.ID == licznik) temp_users.push_back(playerr1.save_val());
+			else temp_users.push_back(temp_users_line);
+			licznik++;
+		}
+		UD.close();
+	}
+	else std::cout << "Blad przy zapisie danych!" << std::endl;
+	UD2.open("User_data.bin", std::ios::out | std::ios::trunc);
+	if (UD2.good()) {
+		for (size_t i = 0; i < temp_users.size(); i++) UD2 << temp_users[i] << std::endl;
+	}
+	else std::cout << "Blad przy zapisie danych!" << std::endl;
+	UD2.close();
+}
+int choose_game() {
+
+	char game_choice, tab_choice, error2 = false;
+	int rtrn_val = 0;
+	size_t pos = 0, game_count = 0, variable_count = 0;
+	std::string delimiter = "/", token;
+	std::ifstream gt;
+
+	gt.open("games_tables.bin", std::ios::in);	//plik przechowujacy nazwe/rodzaj gry oraz nazwy stolow jakie sa przeznaczone do danej gry
+	if (gt.good()) {
+		std::string linia_plik;
+		std::vector<std::string> games_vec, tables_row_vec;
+		std::vector<std::vector<std::string>>tables_vec;
+		while (getline(gt, linia_plik)) {
+			game_count++;
+			pos = 0;
+			variable_count = 0;
+			tables_row_vec.clear();
+			while ((pos = linia_plik.find(delimiter)) != std::string::npos) {	//SPRAWDZENIE DANYCH Z LINII
+				token = linia_plik.substr(0, pos);
+				linia_plik.erase(0, pos + delimiter.length());
+				variable_count++;
+				if (variable_count == 1) games_vec.push_back(token);	//wpisz dane do vectora games
+				else tables_row_vec.push_back(token);//wpisz dane do vectora tables_row
+			}
+			tables_vec.push_back(tables_row_vec);	//push calego vectora tables_row
+		}
+		gt.close();
+		do {						//wczytanie menu wyboru gry i stolu na podstawie danych z pliku
+			error = false;
+			system("CLS");
+			std::cout << "\t\tWybierz gre:\n" << std::endl;
+			for (size_t i = 0; i < games_vec.size(); i++) {
+				std::cout << i + 1 << ". " << games_vec[i] << std::endl;
+			}
+			std::cout << std::endl;
+			std::cout << "Nacisnij esc, aby wrocic do Menu glownego..." << std::endl;
+			game_choice = _getch();
+			if (game_choice == 27) rtrn_val = 0; //cofniecie do menu glownego
+			else if ((game_choice < 49 && game_choice != 27) || game_choice > game_count + 48) {
+				std::cout << "ZLE!Wybierz liczbe z zakresu 1 - " << game_count << std::endl;
+				Sleep(2000);
+				error = true;
+			}
+			else {
+				do {
+					error2 = false;
+					system("CLS");
+					std::cout << "\t\t" << games_vec[game_choice - 49] << " - stoly:\n" << std::endl;
+					for (size_t i = 0; i < tables_vec[game_choice - 49].size(); i++) {
+						std::cout << i + 1 << ". " << tables_vec[game_choice - 49][i] << std::endl;
+					}
+					std::cout << "Nacisnij esc, aby wrocic do wyboru gry..." << std::endl;
+					std::cout << std::endl;
+					tab_choice = _getch();
+					if (tab_choice == 27) error = true; //cofniecie do wyboru gry
+					else if ((tab_choice < 49 && tab_choice != 27) || tab_choice > tables_vec[game_choice - 49].size() + 48) {
+						std::cout << "ZLE!Wybierz liczbe z zakresu 1 - " << tables_vec[game_choice - 49].size() << std::endl;
+						Sleep(2000);
+						error2 = true;
+					}
+					else {
+						rtrn_val = 100 * (game_choice - 48) + tab_choice - 48;
+					}
+				} while (error2);
+			}
+		} while (error);
+		return rtrn_val;
+	}
+	else {
+		std::cout << "Blad odczytu plikow, sprobuj ponownie pozniej";
+		Sleep(2000);
+		return 1;
+	}
+}
+
+template <typename T>
+T get_game_data(unsigned int input) {
+
+
+	//std::vector<std::string> data_vec;
+	std:vector<std::string> data;
+	T Table1(data);
+	return Table1;
 }
