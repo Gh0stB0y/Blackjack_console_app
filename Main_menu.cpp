@@ -1,7 +1,9 @@
 //Main_menu.cpp
+
 #include "class_player.h"
 #include "Main_menu.h"
 #include "board_class.h"
+
 //using namespace std;
 
 bool error;
@@ -9,37 +11,78 @@ bool error;
 
 
 
-//GLOWNE FUNKCJE
 
-void play() {
+//MENU GLOWNE
+
+void play(Player& player1) {
 	
 	Board* game_pointer=nullptr;
+	bool finish = false;
+	short unsigned int stage=1;
 	unsigned int game_tab_ID=choose_game();	//wybor gry i stolu do gry z pliku, zwracana liczba jest 3-cyfrowa, pierwsza cyfra determinuje gre, dwie kolejne stol do gry
 	
-	switch (game_tab_ID/100) {
-	case 0:
-		break;
-	case 1:
-		get_game_data<Board_BJ>(game_tab_ID);
-		break;
-	case 2:
-		get_game_data<Board_roulette>(game_tab_ID);
-		break;
-	case 3:
-		get_game_data<Board_bacarrat>(game_tab_ID);
-		break;
-	case 4:
-		get_game_data<Board_poker>(game_tab_ID);
-		break;
-	case 5:
-		get_game_data<Board_war>(game_tab_ID);
-		break;
-	default:
-		break;
-		
+	if (game_tab_ID / 100 == 1) {
+		game_pointer =new Board_BJ(game_tab_ID);
+		//game_pointer = &ptr;
 	}
-}
+	else if (game_tab_ID / 100 == 2) {
+		game_pointer=new Board_roulette(game_tab_ID);
+		//game_pointer = &Table1;
+	}
+	else if (game_tab_ID / 100 == 3) {
+		game_pointer =new Board_bacarrat(game_tab_ID);
+		//game_pointer = &Table1;
+	}
+	else if (game_tab_ID / 100 == 4) {
+		game_pointer =new Board_poker(game_tab_ID);
+		//game_pointer = &Table1;
+	}
+	else if (game_tab_ID / 100 == 5) {
+		game_pointer =new Board_war(game_tab_ID);
+		//game_pointer = &Table1;
+	}
+	else if (game_tab_ID == 0) return; 
+	else {
+		std::cout << "BLAD ODCZYTU! Powrot do menu glownego..." << std::endl;
+		Sleep(2000);
+		return;
+	}
+	//ZOSTAL WYGENEROWANY STOL DO KONKRETNEJ GRY Z USTAWIENIAMI SPISANYMI W PLIKU
+	
+	do {
+		game_pointer->Disp_table(player1);
 
+		 // ZMIENNA  stage OKRESLA ETAP ROZGRYWKI: 1 - PRZETASOWANIE KART, 2 - GRA WLASCIWA, 3  - ZMIANA KRUPIERA, 4 - BETowanie
+		switch (stage) {
+			
+		case 1:
+			game_pointer->shuffle_cards();
+			break;
+		case 2:
+			game_pointer->play_game();
+			break;
+		case 3:
+			game_pointer->croupier_change();
+			break;
+		case 4:
+			game_pointer->bet();
+			break;
+		default:
+			std::cout << "Blad gry! Powrot do menu glownego...";
+			Sleep(3000);
+			finish = 1;
+			break;
+		}
+
+
+
+		
+
+	} while (!finish);
+	
+	
+	delete game_pointer;
+}
 void settings() {
 	char sign;
 	char sign2;
@@ -114,6 +157,10 @@ void exit_game(Player& player1) {
 	Sleep(5000);
 	exit(0);
 }
+//
+
+
+//INICJALIZACJA
 void ile_wejsc() {
 	std::fstream wykaz_wejscia;
 	std::string linia;
@@ -472,7 +519,7 @@ void Display_main_menu(Player& player1) {
 
 		case '1':
 			error = false;
-			play();
+			play(player1);
 			break;
 		case '2':
 			error = false;
@@ -506,7 +553,7 @@ void initialize() {
 	for (;;) Display_main_menu(Play1);
 
 }
-
+//
 
 
 //FUNKCJE POBOCZNE
@@ -608,14 +655,4 @@ int choose_game() {
 		Sleep(2000);
 		return 1;
 	}
-}
-
-template <typename T>
-T get_game_data(unsigned int input) {
-
-
-	//std::vector<std::string> data_vec;
-	std:vector<std::string> data;
-	T Table1(data);
-	return Table1;
 }

@@ -11,7 +11,7 @@
 #include <sstream>
 #include "class_player.h"
 //using namespace std;
-
+//
 
 Player login();	/*funkcja pozwala na zalogowanie do gry lub granie jako gosc*/
 void Display_main_menu();	/* funkcja wyswietla menu glowne*/
@@ -22,7 +22,7 @@ byc moze w przyszlosci przed menu bedzie wyswietlac sie jeszcze jakas animacja
 
 pozwala tez na wybor i obsluge opcji w menu glownym: gra, ustawienia, statystyki, wyjscie
 */
-void play();
+void play(Player& player1);
 /*
 funkcja obslugujaca caly proces gry:asd
 wybor gry, wybor stolu, ustawienia nastepnej gry, gra, odejscie od stolu
@@ -37,7 +37,7 @@ i w sumie nie wiem czego jeszcze, trzeba isc do kasyna zeby zrobic research :D
 
 */
 
-void stats();
+void stats(Player& playerr1);
 /*
 pokazuje statystyki ze wszystkich odbytych gier w tym programie:
 
@@ -58,3 +58,12 @@ wyjscie z programu
 */
 
 int choose_game();
+void user_save(Player& playerr1);
+void ile_wejsc();
+
+
+//Board_BJ create_table(1);
+//Board_roulette create_table(2);
+//Board_bacarrat create_table(3);
+//Board_poker create_table(4);
+//Board_war create_table(5);

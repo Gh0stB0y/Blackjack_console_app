@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <sstream>
 #include <string>
-
+//
 class Player {
 public:
 	std::string username;
@@ -18,8 +18,8 @@ public:
 	friend void user_save(Player&);
 
 	void Get_username() {
-		std::cout << "PROBNY TEKST " << username<<std::endl;
-
+		std::cout << username;
+		for (size_t j = 0; j < 20 - username.size(); j++) std::cout << " ";
 	}
 	bool Get_ID() {
 		if (ID == 4) return 1;
