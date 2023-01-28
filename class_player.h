@@ -11,20 +11,22 @@ public:
 	std::string password;
 	int ID = 0, lvl = 1, exp = 0;
 	float bankroll = 0, profit = 0, cash_dep = 0, cash_wth = 0;	//cash deposited, cash withdrawn
-	short int seat = 0;
+	short int seats=0;
 	int BJ_win = 0, BJ_lose = 0, BJ_draw = 0, BJ_BJ = 0, BJ_games = 0;
 
 	friend Player login();
 	friend void user_save(Player&);
 
-	void Get_username() {
-		std::cout << username;
-		for (size_t j = 0; j < 20 - username.size(); j++) std::cout << " ";
+	std::string Get_username() {
+		return username;
 	}
 	bool Get_ID() {
 		if (ID == 4) return 1;
 		else return 0;
 	}
+	void add_seat() { seats++; }
+	void remove_seat() { seats--; }
+	short int how_many_seats() {return seats;}
 	Player(int i, std::string un, std::string um, std::string up) : ID(i), username(un), mail(um), password(up), bankroll(5000)
 	{	// konstruktor uzywany przy procesie rejestracji
 		system("CLS");
@@ -70,4 +72,5 @@ public:
 	void Main_menu_data() {
 		std::cout << "Gracz: " << username << "\tID: " << ID << "\tBankroll: " << bankroll << std::endl;
 	}
+	void Game_data(){ std::cout << "Gracz: " << username << "\tBankroll: " << bankroll << std::endl; }
 };

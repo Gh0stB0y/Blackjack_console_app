@@ -3,22 +3,26 @@
 #include "class_player.h"
 #include "Main_menu.h"
 #include "board_class.h"
+#include "class_croupier.h"
 
 //using namespace std;
 
 bool error;
-
-
-
-
 
 //MENU GLOWNE
 
 void play(Player& player1) {
 	
 	Board* game_pointer=nullptr;
+	Croupier* croupier_ptr;
+	std::vector<Croupier> Croupier_vec;
+	create_croupiers(Croupier_vec);
+	srand((unsigned)time(NULL));
+	short unsigned int current_croupier = rand() % (Croupier_vec.size() - 1);
+	croupier_ptr = &Croupier_vec[current_croupier];
+	
 	bool finish = false;
-	short unsigned int stage=1;
+	time_t croupier_timer=time(NULL), current_time = 0;
 	unsigned int game_tab_ID=choose_game();	//wybor gry i stolu do gry z pliku, zwracana liczba jest 3-cyfrowa, pierwsza cyfra determinuje gre, dwie kolejne stol do gry
 	
 	if (game_tab_ID / 100 == 1) {
@@ -46,33 +50,28 @@ void play(Player& player1) {
 		std::cout << "BLAD ODCZYTU! Powrot do menu glownego..." << std::endl;
 		Sleep(2000);
 		return;
+		
 	}
 	//ZOSTAL WYGENEROWANY STOL DO KONKRETNEJ GRY Z USTAWIENIAMI SPISANYMI W PLIKU
 	
 	do {
-		game_pointer->Disp_table(player1);
-
+		//game_pointer->Disp_table(player1);
+		
 		 // ZMIENNA  stage OKRESLA ETAP ROZGRYWKI: 1 - PRZETASOWANIE KART, 2 - GRA WLASCIWA, 3  - ZMIANA KRUPIERA, 4 - BETowanie
-		switch (stage) {
+		
+		if (game_pointer->check_shuffle()) game_pointer->shuffle_cards();
+		if (check_croupier_change(croupier_timer, current_time)) game_pointer->croupier_change(croupier_ptr, Croupier_vec, current_croupier);
+	
+		
+		game_pointer->bet(player1,finish);
 			
-		case 1:
-			game_pointer->shuffle_cards();
-			break;
-		case 2:
-			game_pointer->play_game();
-			break;
-		case 3:
-			game_pointer->croupier_change();
-			break;
-		case 4:
-			game_pointer->bet();
-			break;
-		default:
-			std::cout << "Blad gry! Powrot do menu glownego...";
-			Sleep(3000);
-			finish = 1;
-			break;
-		}
+			
+			
+			
+			
+			
+			
+		
 
 
 
@@ -655,4 +654,45 @@ int choose_game() {
 		Sleep(2000);
 		return 1;
 	}
+}
+std::vector<Croupier> create_croupiers(std::vector<Croupier>& C_vec) {
+
+	size_t pos = 0, line_count = 0, variable_count = 0;
+	std::string delimiter = "/", token="";
+	std::ifstream CD;
+
+	CD.open("croupier_data.bin", std::ios::in);	//plik przechowujacy nazwe/rodzaj gry oraz nazwy stolow jakie sa przeznaczone do danej gry
+	if (CD.good()) {
+		std::string linia_plik;
+		std::vector<std::string> single_croupier_vec;
+		while (getline(CD, linia_plik)) {
+			line_count++;
+			pos = 0;
+			variable_count = 0;
+			single_croupier_vec.clear();
+			while ((pos = linia_plik.find(delimiter)) != std::string::npos) {	//SPRAWDZENIE DANYCH Z LINII
+				token = linia_plik.substr(0, pos);
+				linia_plik.erase(0, pos + delimiter.length());
+				variable_count++;
+				single_croupier_vec.push_back(token);//wpisz dane do vectora tables_row
+			}
+			Croupier Cr(single_croupier_vec);
+			C_vec.emplace_back(Cr);
+		}
+	}
+	else{ 
+		std::cout << "Blad odczytu plikow, sprobuj ponownie pozniej";
+		Sleep(2000);
+	}
+	CD.close();
+	return C_vec;
+}
+bool check_croupier_change(time_t& c_time, time_t& curr_time) {
+	
+	curr_time = time(NULL);
+	if (curr_time - c_time > 900) {
+		c_time = curr_time;
+		return 1;
+	}
+	else { return 0;}
 }

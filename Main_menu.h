@@ -10,6 +10,8 @@
 #include <vector>
 #include <sstream>
 #include "class_player.h"
+#include "class_croupier.h"
+
 //using namespace std;
 //
 
@@ -60,7 +62,8 @@ wyjscie z programu
 int choose_game();
 void user_save(Player& playerr1);
 void ile_wejsc();
-
+std::vector<Croupier> create_croupiers(std::vector<Croupier>& C_vec);
+bool check_croupier_change(time_t &c_time, time_t &curr_time);
 
 //Board_BJ create_table(1);
 //Board_roulette create_table(2);
