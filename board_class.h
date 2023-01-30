@@ -14,11 +14,11 @@ protected:
 	bool bots=0;
 	
 public:
-	virtual void Disp_table(Player& play1) = 0;
+	virtual void Disp_table(Player &play1) = 0;
 	virtual void shuffle_cards() = 0;
-	virtual void play_game(Player& play1) = 0;
+	virtual void play_game(Player &play1, Croupier*& croupier) = 0;
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C) = 0;
-	virtual void bet(Player& play1,bool &fin) = 0;
+	virtual void bet(Player &play1,bool &fin, Croupier*& croupier) = 0;
 	virtual bool check_shuffle() = 0;
 	
 };
@@ -38,25 +38,27 @@ class Board_BJ :public Board {
 	std::vector<std::string> deck;//POTASOWANE KARTY
 	std::vector<int> deck_value; //WARTOSCI POTASOWANYCH KART
 	std::vector<std::string> cards_croupier;
-	std::vector<std::string> cards_players;
+	std::vector<int> cards_croupier_value;
+	std::vector<std::vector<std::string>> cards_players;
+	std::vector<std::vector<int>> cards_players_value;
 	short unsigned int cards_played = 0, red_card_deck = 0;
-	std::vector<int>bets_players;
-	std::vector<int>side_bets_players;
-	std::vector<int>bets_bots;
-	std::vector<int>side_bets_bots;
+	std::vector<float>bets_players;
+	std::vector<float>bets_bots;
 	std::vector<bool>empty_seat;
 	std::vector<bool>empty_seat_player;
 	bool deck_finish = 0;
 public:
-	
+	Board_BJ(unsigned int input);
 	void Disp_table(Player& play1);
 	void shuffle_cards();
-	void play_game(Player& play1);
+	void play_game(Player& play1, Croupier*& croupier);
 	void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C);
-	void bet(Player& play1, bool &fin);
+	void bet(Player& play1, bool &fin,Croupier* &croupier);
 	bool check_shuffle();
-	int betting_menu(Player& play1,bool &bet_error,char &choice);
-	Board_BJ(unsigned int input);
+
+	float betting_menu(Player& play1,bool &bet_error,char &choice, char& choice2, Croupier*& croupier);
+	bool insurance(Player& play1, size_t input);
+
 	// KOLEJNOSC: DISP TABLE W TLE, BET, PLAY_GAME.  CROUPIER CHANGE I SHUFFLE CARDS W RAZIE POTRZEBY
 };
 class Board_roulette :public Board {
@@ -65,9 +67,9 @@ class Board_roulette :public Board {
 public:
 	virtual void Disp_table(Player& play1);
 	virtual void shuffle_cards();
-	virtual void play_game(Player& play1);
+	virtual void play_game(Player& play1, Croupier*& croupier);
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C);
-	virtual void bet(Player& play1, bool &fin);
+	virtual void bet(Player& play1, bool &fin, Croupier*& croupier);
 	bool check_shuffle();
 	Board_roulette(int input);
 };
@@ -76,9 +78,9 @@ class Board_bacarrat :public Board {
 public:
 	virtual void Disp_table(Player& play1);
 	virtual void shuffle_cards();
-	virtual void play_game(Player& play1);
+	virtual void play_game(Player& play1, Croupier*& croupier);
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C);
-	virtual void bet(Player& play1, bool &fin);
+	virtual void bet(Player& play1, bool &fin, Croupier*& croupier);
 	bool check_shuffle();
 	Board_bacarrat(int input);
 	//COMIN SOON
@@ -88,9 +90,9 @@ class Board_poker :public Board {
 public:
 	virtual void Disp_table(Player& play1);
 	virtual void shuffle_cards();
-	virtual void play_game(Player& play1);
+	virtual void play_game(Player& play1, Croupier*& croupier);
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int &curr_C);
-	virtual void bet(Player& play1, bool &fin);
+	virtual void bet(Player& play1, bool &fin, Croupier*& croupier);
 	bool check_shuffle();
 	Board_poker(int input);
 	//COMIN SOON
@@ -101,9 +103,9 @@ class Board_war :public Board {
 public:
 	virtual void Disp_table(Player& play1);
 	virtual void shuffle_cards();
-	virtual void play_game(Player& play1);
+	virtual void play_game(Player& play1, Croupier*& croupier);
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int &curr_C);
-	virtual void bet(Player& play1, bool &fin);
+	virtual void bet(Player& play1, bool &fin, Croupier*& croupier);
 	bool check_shuffle();
 	Board_war(int input);
 };

@@ -5,16 +5,8 @@
 #include "class_player.h"
 #include <Windows.h>
 
-
-//
-
-
-
-
-
 int main() {
-	
-	
+   
 	initialize();
 
 	return 0;

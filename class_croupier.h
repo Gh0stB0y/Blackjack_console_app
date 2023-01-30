@@ -13,7 +13,7 @@ class Croupier {
 	int ID = 0, win = 0, lose = 0, draw = 0;
 	float profit = 0;
 	unsigned short int main_croupiers = 5; ///LICZBA KRUPIEROW KTORZY SA ZAWSZE DOSTEPNI 
-	
+	friend class Board_BJ;
 public:
 	
 	Croupier(std::vector<std::string> input) {

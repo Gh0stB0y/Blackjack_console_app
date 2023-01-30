@@ -61,25 +61,11 @@ void play(Player& player1) {
 		
 		if (game_pointer->check_shuffle()) game_pointer->shuffle_cards();
 		if (check_croupier_change(croupier_timer, current_time)) game_pointer->croupier_change(croupier_ptr, Croupier_vec, current_croupier);
-	
-		
-		game_pointer->bet(player1,finish);
 			
+		game_pointer->bet(player1,finish,croupier_ptr);
 			
-			
-			
-			
-			
-			
-		
-
-
-
-		
 
 	} while (!finish);
-	
-	
 	delete game_pointer;
 }
 void settings() {

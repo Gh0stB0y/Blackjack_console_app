@@ -3,9 +3,11 @@
 #include <windows.h>
 #include <sstream>
 #include <string>
+//#include "board_class.h"
+//#include "class_croupier.h"
 //
 class Player {
-public:
+
 	std::string username;
 	std::string mail;
 	std::string password;
@@ -16,7 +18,8 @@ public:
 
 	friend Player login();
 	friend void user_save(Player&);
-
+	friend class Board_BJ;
+public:
 	std::string Get_username() {
 		return username;
 	}
