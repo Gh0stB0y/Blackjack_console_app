@@ -258,8 +258,12 @@ void Board_BJ::shuffle_cards() {
 }
 void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 	this->Disp_table(play1);
+	std::vector<bool>empty_seat_temp= empty_seat;
+	std::vector<bool>empty_seat_player_temp= empty_seat_player;
 	std::vector<bool> seat_play;
 	std::vector<int> split_count;
+	std::vector<int>cards_for_player;
+	cards_for_player.resize(max_seats, 2);
 	seat_play.resize(max_seats, 0);
 	split_count.resize(max_seats, 0);
 	bool show_card = 0;
@@ -310,6 +314,10 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 	}
 	suma_croupier = cards_croupier_value[0];
 	
+	cards_players[1][0] = "As kier";
+	cards_players_value[1][0] = 11;
+	cards_players[1][1] = "As trefl";
+	cards_players_value[1][1] = 11;
 	//SPRAWDZENIE SIDE BETOW
 	if (side_bets == 1) {
 		check_sideBet(play1, croupier);
@@ -406,28 +414,43 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 			if (cards_players_value[i][j] == 11) ace_counter[i]++;
 		}
 	}
-
+	
 	//decyzje gracza
 	for (int j = max_seats - 1; j >= 0;) {
 		
-		int decision_counter = 0, decisions = 2, cards_for_player = 2;
+		int decision_counter = 0, decisions = 2;
 		bool decision_finish = 0, decision_error = 0;
 		
 		char choice = 0;
-		for (size_t i = 0; i < cards_players_value[j].size(); i++) suma[j] += cards_players_value[j][i];//zliczenie wartosci kart
+		
 		//this->Disp_table(play1);
 		do {
-			
+			suma[j] = 0;
+			for (size_t i = 0; i < cards_players_value[j].size(); i++) suma[j] += cards_players_value[j][i];//zliczenie wartosci kart
 			
 			//cards_for_player = 2;
 			
 			if (seat_play[j] == 1) {
 				
 				do {
+
+					if (cards_for_player[j] < 2) {
+						cards_for_player[j]++;
+						cards_played++;
+						cards_players[j][cards_for_player[j] - 1] = deck.front();
+						cards_players_value[j][cards_for_player[j] - 1] = deck_value.front();
+						if (cards_players_value[j][cards_for_player[j] - 1] == 11)ace_counter[j]++;
+						deck.erase(deck.begin());
+						deck_value.erase(deck_value.begin());
+						suma[j] += cards_players_value[j][cards_for_player[j] - 1];
+					}
+
 					//menu decyzji
 					this->Disp_table(play1);
 					//
 					for (size_t i = 0; i < max_seats; i++) std::cout << "seat_play: "<<seat_play[i]<<"                  ";
+					std::cout << std::endl;
+					for (size_t i = 0; i < max_seats; i++) std::cout << "cards_for_player["<<i<<"]: " << cards_for_player[i] << "                  ";
 					std::cout << std::endl;
 					//for (size_t i = 0; i < max_seats; i++) std::cout << "Ace_counter: " << ace_counter[i] << "                ";
 					//std::cout<<std::endl;
@@ -443,21 +466,21 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 
 					if (choice - 48 == 1) {//dobierz
 						decision_error = 0;
-						cards_for_player++;
+						cards_for_player[j]++;
 						decision_counter++;
 						cards_played++;
 						for (size_t n = 0; n < max_seats; n++) {
-							if (cards_for_player > cards_players[n].size()) {
-								cards_players[n].resize(cards_for_player, "");
-								cards_players_value[n].resize(cards_for_player, 0);
+							if (cards_for_player[j] > cards_players[n].size()) {
+								cards_players[n].resize(cards_for_player[j], "");
+								cards_players_value[n].resize(cards_for_player[j], 0);
 							}
 						}
-						cards_players[j][cards_for_player -1]=deck.front();
-						cards_players_value[j][cards_for_player - 1]=deck_value.front();
-						if (cards_players_value[j][cards_for_player - 1]==11)ace_counter[j]++;
+						cards_players[j][cards_for_player[j] - 1] = deck.front();
+						cards_players_value[j][cards_for_player[j] - 1] = deck_value.front();
+						if (cards_players_value[j][cards_for_player[j] - 1] == 11)ace_counter[j]++;
 						deck.erase(deck.begin());
 						deck_value.erase(deck_value.begin());				
-						suma[j] += cards_players_value[j][cards_for_player - 1];
+						suma[j] += cards_players_value[j][cards_for_player[j] - 1];
 						if (suma[j] > 21) {
 							if (ace_counter[j] > 0) {
 								suma[j] -= 10; ace_counter[j]--;
@@ -474,19 +497,19 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 						if (decisions > 2) {//jesli podwojenie jest mozliwe
 							if (play1.bankroll>=bets_players[3*j]) {
 								decision_error = 0;
-								cards_for_player++;
+								cards_for_player[j]++;
 								decision_counter++;
 								cards_played++;
 								play1.bankroll -= bets_players[3 * j];play1.profit-= bets_players[3 * j];this->cash_profit+=bets_players[3 * j];croupier->profit += bets_players[3 * j];
 								bets_players[3 * j]= bets_players[3 * j]*2;
 								for (size_t n = 0; n < max_seats; n++) {
-									if (cards_for_player > cards_players[n].size()) {
-										cards_players[n].resize(cards_for_player, "");
-										cards_players_value[n].resize(cards_for_player, 0);
+									if (cards_for_player[j] > cards_players[n].size()) {
+										cards_players[n].resize(cards_for_player[j], "");
+										cards_players_value[n].resize(cards_for_player[j], 0);
 									}
 								}
-								cards_players[j][cards_for_player - 1] = deck.front();
-								cards_players_value[j][cards_for_player - 1] = deck_value.front();
+								cards_players[j][cards_for_player[j] - 1] = deck.front();
+								cards_players_value[j][cards_for_player[j] - 1] = deck_value.front();
 								if (deck_value.front() == 11)ace_counter[j]++;
 								deck.erase(deck.begin());
 								deck_value.erase(deck_value.begin());
@@ -521,10 +544,96 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 					}
 					else if (choice - 48 == 4) { //rozdziel karty
 						if (decisions > 3) {//jesli rozdzielenie jest mozliwe
-						
-							split_count.push_back(0);
-							for(size_t k=0;k< split_count.size();k++){if (k >= j)split_count[k]++;}
-							
+							if (play1.bankroll >= bets_players[3 * j]) {
+								decision_error = 0;
+								cards_played++;
+
+								//ROSZERZENIE LICZBY MIEJSC O 1 W PRAWO
+								split_count.resize(split_count.size() + 1, 0);
+								for (size_t k = 0; k < split_count.size(); k++) { if (k >= j)split_count[k]++; }
+								seat_play.resize(split_count.size());
+								bets_players.resize(split_count.size() * 3);
+								bets_bots.resize(split_count.size());
+								empty_seat_player.resize(split_count.size());
+								empty_seat.resize(split_count.size());
+								cards_players.resize(split_count.size());
+								cards_players_value.resize(split_count.size());
+								suma.resize(split_count.size());
+								ace_counter.resize(split_count.size());
+								cards_for_player.resize(split_count.size());
+
+
+								//PRZESUNIECIE calych rzedow W PRAWO
+								for (size_t n = split_count.size() - 1; n > j;) {
+
+									seat_play[n] = seat_play[n - 1];
+									bets_players[3 * n] = bets_players[3 * (n - 1)];
+									bets_bots[n] = bets_bots[n - 1];
+									empty_seat_player[n] = empty_seat_player[n - 1];
+									empty_seat[n] = empty_seat[n - 1];
+									cards_players[n] = cards_players[n - 1];
+									cards_players_value[n] = cards_players_value[n - 1];
+									suma[n] = suma[n - 1];
+									ace_counter[n] = ace_counter[n - 1];
+									cards_for_player[n] = cards_for_player[n - 1];
+									n--;
+								}
+
+
+
+								//PRZESUNIECIE JEDNEJ KARTY W PRAWO
+								play1.bankroll -= bets_players[3 * j]; play1.profit -= bets_players[3 * j]; this->cash_profit += bets_players[3 * j]; croupier->profit += bets_players[3 * j];
+								cards_players[j + 1][0] = cards_players[j][1];
+								cards_players_value[j + 1][0] = cards_players_value[j][1];
+								cards_players[j][1] = "";
+								cards_players_value[j][1] = 0;
+
+								//std::cout << "cards_players_value[j + 1][0]: " << cards_players_value[j + 1][0] << std::endl;
+								//Sleep(1500);
+								if(cards_players_value[j + 1][0]!=11) {
+									//DOBIERANIE KARTY przy rozdzielaniu kart innych niz asy
+									cards_players[j + 1][cards_for_player[j + 1] - 1] = deck.front();
+									cards_players_value[j + 1][cards_for_player[j + 1] - 1] = deck_value.front();
+									if (cards_players_value[j + 1][cards_for_player[j + 1] - 1] == 11)ace_counter[j + 1]++;
+									deck.erase(deck.begin());
+									deck_value.erase(deck_value.begin());
+									suma[j + 1] += cards_players_value[j + 1][cards_for_player[j + 1] - 1];
+									cards_for_player[j] = 1;
+									if (suma[j + 1] == 21) { decision_finish = 1; this->Disp_table(play1); std::cout << "21!" << std::endl; Sleep(2000); }
+									j++;
+								}
+								else {
+								
+									cards_played++;
+									cards_for_player[j+1] = 2; cards_for_player[j] = 2;
+									cards_players[j + 1][1] = deck.front();
+									cards_players_value[j + 1][1] = deck_value.front();
+									if (cards_players_value[j + 1][1] == 11) { cards_players_value[j + 1][1]=1; }
+									deck.erase(deck.begin());
+									deck_value.erase(deck_value.begin());
+									suma[j + 1] = cards_players_value[j + 1][0]+ cards_players_value[j + 1][1];
+									
+									this->Disp_table(play1);
+									Sleep(1500);
+
+									cards_players[j][1] = deck.front();
+									cards_players_value[j][1] = deck_value.front();
+									if (cards_players_value[j][1] == 11) { cards_players_value[j][1]=1; }
+									deck.erase(deck.begin());
+									deck_value.erase(deck_value.begin());
+									suma[j] = cards_players_value[j][0] + cards_players_value[j][1];
+									this->Disp_table(play1);
+									Sleep(1500);
+									decision_finish = 1;
+
+								}
+
+							}
+							else {
+								decision_error = 1;
+								std::cout << "Masz za malo gotowki..." << std::endl;
+								Sleep(2000);
+							}
 						}
 						else{//jesli rozdzielenie jest niemozliwe
 							decision_error = 1;
@@ -649,6 +758,12 @@ void Board_BJ::play_game(Player& play1, Croupier*& croupier) {
 	ace_counter.clear();
 	suma_croupier = 0;
 	ace_counter_croupier = 0;
+	suma.clear();
+
+	empty_seat.clear();
+	empty_seat_player.clear();
+	empty_seat = empty_seat_temp;
+	empty_seat_player = empty_seat_player_temp;
 }
 void Board_BJ::croupier_change(Croupier*& ptr,std::vector<Croupier> &C_vec, short unsigned int& curr_C) {
 	srand((unsigned)time(NULL));
