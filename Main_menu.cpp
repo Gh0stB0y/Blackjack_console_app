@@ -54,19 +54,17 @@ void play(Player& player1) {
 	}
 	//ZOSTAL WYGENEROWANY STOL DO KONKRETNEJ GRY Z USTAWIENIAMI SPISANYMI W PLIKU
 	
-	do {
-		//game_pointer->Disp_table(player1);
-		
+	do {	
 		 // ZMIENNA  stage OKRESLA ETAP ROZGRYWKI: 1 - PRZETASOWANIE KART, 2 - GRA WLASCIWA, 3  - ZMIANA KRUPIERA, 4 - BETowanie
 		
 		if (game_pointer->check_shuffle()) game_pointer->shuffle_cards();
 		if (check_croupier_change(croupier_timer, current_time)) game_pointer->croupier_change(croupier_ptr, Croupier_vec, current_croupier);
-			
 		game_pointer->bet(player1,finish,croupier_ptr);
-			
 
 	} while (!finish);
-	delete game_pointer;
+
+	//zrzucic dane krupierow do pliku
+	delete game_pointer, croupier_ptr;
 }
 void settings() {
 	char sign;
@@ -136,7 +134,8 @@ void stats(Player& playerr1) {
 	} while (!finish);
 }
 void exit_game(Player& player1) {
-	user_save(player1);
+	
+	if(player1.Get_username()!="Gosc")user_save(player1);
 	system("CLS");
 	std::cout << "Dziekujemy za wizyte w kasynie, do zobaczenia niebawem :)";
 	Sleep(5000);

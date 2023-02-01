@@ -29,6 +29,7 @@ public:
 	}
 	void add_seat() { seats++; }
 	void remove_seat() { seats--; }
+	void remove_all_seats() { seats=0; }
 	short int how_many_seats() {return seats;}
 	Player(int i, std::string un, std::string um, std::string up) : ID(i), username(un), mail(um), password(up), bankroll(5000)
 	{	// konstruktor uzywany przy procesie rejestracji

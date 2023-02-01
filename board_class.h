@@ -20,15 +20,14 @@ public:
 	virtual void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C) = 0;
 	virtual void bet(Player &play1,bool &fin, Croupier*& croupier) = 0;
 	virtual bool check_shuffle() = 0;
-	
 };
 class Board_BJ :public Board {
 
-	
 	unsigned int draw=0, BJ=0;
 	bool side_bets = 0;
 	short int shoe_size = 6;
-	
+	int suma_croupier = 0;
+	std::vector<int> suma_player;
 	std::vector<int> all_cards; //kolejnosc od 2 do asa; kier, karo, pik, trefl
 	std::vector<std::string> card_name = { "2 kier", "2 karo","2 pik","2 trefl","3 kier", "3 karo","3 pik","3 trefl" ,"4 kier", "4 karo","4 pik","4 trefl",
 	"5 kier", "5 karo","5 pik","5 trefl","6 kier", "6 karo","6 pik","6 trefl","7 kier","7 karo","7 pik","7 trefl","8 kier", "8 karo","8 pik","8 trefl",
@@ -46,6 +45,7 @@ class Board_BJ :public Board {
 	std::vector<float>bets_bots;
 	std::vector<bool>empty_seat;
 	std::vector<bool>empty_seat_player;
+
 	bool deck_finish = 0;
 public:
 	Board_BJ(unsigned int input);
@@ -55,7 +55,7 @@ public:
 	void croupier_change(Croupier*& ptr, std::vector<Croupier> &C_vec, short unsigned int& curr_C);
 	void bet(Player& play1, bool &fin,Croupier* &croupier);
 	bool check_shuffle();
-
+	void check_sideBet(Player& play1, Croupier*& croupier);
 	float betting_menu(Player& play1,bool &bet_error,char &choice, char& choice2, Croupier*& croupier);
 	bool insurance(Player& play1, size_t input);
 
